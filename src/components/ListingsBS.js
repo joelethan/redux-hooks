@@ -6,7 +6,6 @@ import TodoForm from './TodoForm';
 export const Ant = () => {
   const [Loading, setLoading] = useState(true)
   const [Todos, setTodos] = useState([])
-  const [Completed, setCompleted] = useState([])
 
   useEffect(()=>{
     getTodos().then(er=>{
@@ -15,24 +14,13 @@ export const Ant = () => {
     })
   }, [])
 
-  useEffect(()=>{
-    console.log(Completed, ' new selected ', [2,3,5,6,1]);
-  }, [Completed])
-
-  // rowSelection object indicates the need for row selection
-  const rowSelection = {
-      onChange: (selectedRowKeys, selectedRows) => {
-          setCompleted(selectedRowKeys)
-          console.log(selectedRows, ' selectedRows');
-      },
-  };
   const tableData = () => {
     return Todos.map((todo, index)=>{
       const { userId, id, title } = todo;
       return (
         <tr key={index}>
           <th scope="row">{id}</th>
-          <td>{title}</td>
+          <td onClick={()=>console.log(id)}>{title}</td>
           <td>{userId}</td>
         </tr>
       )
@@ -44,7 +32,7 @@ export const Ant = () => {
       <Divider />
       <TodoForm />
       {Loading ? <div>Loading....</div>:
-      <table className="table">
+      <table className="table table-hover">
         <thead>
           <tr>
             <th scope="col">ID</th>

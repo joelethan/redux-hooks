@@ -1,28 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Divider } from 'antd';
-import { Link } from 'react-router-dom';
 import { getTodos } from '../http';
 
-const columns = [
-  {
-    title: 'ID ',
-    dataIndex: 'id',
-  },
-  {
-    title: 'Title',
-    dataIndex: 'title',
-    render: text => <Link to='/text'>{text}</Link>,
-  },
-  {
-    title: 'User',
-    dataIndex: 'userId',
-  }
-];
 
 export const Listings = () => {
   const [Loading, setLoading] = useState(true)
   const [Todos, setTodos] = useState([])
-  const [Completed, setCompleted] = useState([])
 
   useEffect(()=>{
     getTodos().then(er=>{
@@ -31,28 +14,31 @@ export const Listings = () => {
     })
   }, [])
 
-  useEffect(()=>{
-    console.log(Completed, ' new selected ', [2,3,5,6,1]);
-  }, [Completed])
+  const columns = [
+    {
+      title: 'ID ',
+      dataIndex: 'id',
+    },
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      render: text => <div data-id={text} onClick={handleClick}>{text}</div>,
+    },
+    {
+      title: 'User',
+      dataIndex: 'userId',
+    }
+  ];
 
-  // rowSelection object indicates the need for row selection
-  const rowSelection = {
-      onChange: (selectedRowKeys, selectedRows) => {
-          setCompleted(selectedRowKeys)
-          console.log(selectedRows, ' selectedRows');
-      },
-  };
-
+  const handleClick = (e) => {
+    console.log('Text: ', e.currentTarget.dataset.id);
+  }
   return (
     <div>
       {Loading ? <div className='container'>Loading....</div> :
       <div className='container'>
         <Divider />
         <Table
-          rowSelection={{
-            type: 'checkbox',
-            ...rowSelection,
-          }}
           rowKey="id"
           columns={columns}
           dataSource={Todos}

@@ -4,8 +4,11 @@ import { addTodo } from '../http';
 export default function TodoForm() {
     const [Todo, setTodo] = useState('');
     const [Message, setMessage] = useState(null);
+    const [Loading, setLoading] = useState(false);
 
-    const submitValue = () => {
+    const submitValue = e => {
+        e.preventDefault();
+        setLoading(true)
         const frmdetails = {
             'userId' : 4,
             'title' : Todo,
@@ -17,6 +20,7 @@ export default function TodoForm() {
                 
                 setMessage(resp.data.title)
                 console.log(Message);
+                setLoading(false)
                 setTodo('')
             })
     }
@@ -29,7 +33,8 @@ export default function TodoForm() {
                     <input type="text" className="form-control" id="todo" value={Todo} 
                         onChange={e => setTodo(e.target.value)} placeholder="Add Todo" />
                 </div>
-                <input type="button" className="btn btn-primary mb-2" value="Click" onClick={submitValue}/>
+                <button type="submit" className="btn btn-primary mb-2" onClick={submitValue}>Confirm identity</button>
+                {Loading ? <div className="spinner-grow ml-2" role="status"><span className="sr-only">Loading...</span></div>: null}
             </form>
             {Message?<small>{Message}</small>:null}
         </div>
