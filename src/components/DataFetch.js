@@ -28,7 +28,7 @@ const reducer = (state, action) => {
 function DataFetch() {
     const [state, dispatch] = useReducer(reducer, intitialState)
     useEffect(()=>{
-        axios.get('https://jsonplaceholder.typicode.com/todos/9')
+        axios.get('http://localhost:5000/todos/9')
           .then(res => dispatch({type: 'success', payload: res.data}))
           .catch(()=>dispatch({type: 'fail'}))
     }, [])
